@@ -85,6 +85,31 @@ class TreeHelper extends AppHelper {
 	public $helpers = array('Html');
 
 	/**
+	 * Default Constructor
+	 *
+	 * @param View $View The View this helper is being attached to.
+	 * @param array $settings Configuration settings for the helper.
+	 */
+	public function __construct(View $View, $settings = array()) {
+		parent::__construct($View, $settings);
+		//adds the settings from the controller to the default values used in the helper but only those defined in the $_defaults array
+		foreach($this->_defaults as $key => $val){
+			if(array_key_exists($key, $this->settings)){
+				$this->_defaults[$key] = $this->settings[$key];
+			}
+		}
+
+		//adds the attributes found in settings sent from the controller to the proper attribute property used in the helper
+		$attributeSettings = array('typeAttributes', 'typeAttributesNext','itemAttributes');
+		foreach($attributeSettings as $attributeSetting){
+			if(array_key_exists($attributeSetting, $this->settings)){
+				$attribute = '_'.$attributeSetting;
+				$this->$attribute = $this->settings[$attributeSetting];
+			}
+		}
+	}
+
+	/**
 	 * Tree generation method.
 	 *
 	 * Accepts the results of
@@ -465,6 +490,7 @@ class TreeHelper extends AppHelper {
 		extract($this->_settings);
 		if ($rType == $type) {
 			$attributes = $this->_typeAttributes;
+			debug($attributes);die;
 			if ($clear) {
 				$this->_typeAttributes = $this->_typeAttributesNext;
 				$this->_typeAttributesNext = array();
