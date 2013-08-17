@@ -490,7 +490,6 @@ class TreeHelper extends AppHelper {
 		extract($this->_settings);
 		if ($rType == $type) {
 			$attributes = $this->_typeAttributes;
-			debug($attributes);die;
 			if ($clear) {
 				$this->_typeAttributes = $this->_typeAttributesNext;
 				$this->_typeAttributesNext = array();
